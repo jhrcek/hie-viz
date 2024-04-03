@@ -78,7 +78,7 @@ renderGraph portNumber settings packageForest =
 
 view : Model -> Document Msg
 view model =
-    { title = "FunDeps"
+    { title = "HIE Viz"
     , body = viewBody model
     }
 

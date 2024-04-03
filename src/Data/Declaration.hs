@@ -14,7 +14,6 @@ where
 import Data.Aeson (FromJSON (parseJSON), ToJSON, ToJSONKey, withText)
 import Data.Text (Text, unpack)
 import Data.Text qualified as Text
-import TUI.Select (Item (showItem))
 import Text.Read (readMaybe)
 
 
@@ -24,10 +23,6 @@ data Decl = Decl
     , declFunction :: FunctionName
     }
     deriving stock (Show, Eq, Ord)
-
-
-instance Item Decl where
-    showItem decl = Text.unpack $ formatNode PackageModuleFunction decl
 
 
 formatNode :: NodeFormat -> Decl -> Text

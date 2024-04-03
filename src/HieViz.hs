@@ -3,7 +3,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module FunDeps
+module HieViz
     ( main
     )
 where
@@ -12,10 +12,7 @@ import Data.DepGraph (DepGraph (DepGraph, graph))
 import Data.DepGraph qualified as DG
 import Data.Graph.Inductive.Graph qualified as G
 import Data.GraphViz.Commands qualified as GvCmd
-import FunDeps.Server (runServer)
-import Settings (defaultSettings)
-import System.Environment (getArgs)
-import TUI qualified
+import HieViz.Server (runServer)
 import Turtle (d, printf, (%))
 import Prelude hiding (FilePath)
 
@@ -27,25 +24,16 @@ main = do
     let depGraph = DG.buildDepGraph edges
     reportSize depGraph
     args <- parseArgs
-    case argsUiMode args of
-        Cli -> TUI.terminalUI depGraph defaultSettings
-        HttpServer port -> runServer port depGraph
+    runServer (httpPort args) depGraph
 
 
 -- TODO proper args parsing
 parseArgs :: IO Args
 parseArgs = do
-    args <- getArgs
-    pure $
-        Args $ case args of
-            ["http"] -> HttpServer 3003
-            _ -> Cli
+    pure $ Args{httpPort = 3003}
 
 
-newtype Args = Args {argsUiMode :: UiMode}
-
-
-data UiMode = Cli | HttpServer Int
+newtype Args = Args {httpPort :: Int}
 
 
 reportSize :: DepGraph -> IO ()

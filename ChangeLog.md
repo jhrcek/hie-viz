@@ -1,3 +1,3 @@
-# Changelog for fundeps
+# Changelog for hie-viz
 
 ## Unreleased changes

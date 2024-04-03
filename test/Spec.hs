@@ -1,6 +1,8 @@
-import TUI.CommandsSpec qualified
 import Test.Hspec
 
 
 main :: IO ()
-main = hspec TUI.CommandsSpec.spec
+main = hspec $ do
+    describe "todo" $
+        it "should work" $
+            1 + 1 `shouldBe` 2

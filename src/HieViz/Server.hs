@@ -12,7 +12,7 @@
 #ifdef WithJS
 {-# LANGUAGE TemplateHaskell #-}
 #endif
-module FunDeps.Server (runServer) where
+module HieViz.Server (runServer) where
 
 import Control.Monad.IO.Class (liftIO)
 import Data.Aeson (FromJSON, ToJSON, parseJSON, withObject, (.:))
@@ -28,7 +28,7 @@ import Data.Map.Strict qualified as Map
 import Data.Proxy (Proxy (..))
 import Data.Text (Text)
 import Data.Text qualified as Text
-import FunDeps.Graphviz qualified as GV
+import HieViz.Graphviz qualified as GV
 import Lucid (Html, body_, charset_, doctype_, head_, html_, lang_, meta_, script_, src_, title_)
 import Network.HTTP.Media (MediaType, (//))
 import Network.Wai (Application)
