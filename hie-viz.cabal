@@ -1,12 +1,12 @@
-cabal-version: 3.0
-name: hie-viz
-version: 0.1.0.0
-license: BSD-3-Clause
-license-file: LICENSE
-copyright: 2020 Jan Hrček
-maintainer: honza.hrk@gmail.com
-author: Jan Hrček
-homepage: https://github.com/jhrcek/hie-viz#readme
+cabal-version:      3.0
+name:               hie-viz
+version:            0.1.0.0
+license:            BSD-3-Clause
+license-file:       LICENSE
+copyright:          2020 Jan Hrček
+maintainer:         honza.hrk@gmail.com
+author:             Jan Hrček
+homepage:           https://github.com/jhrcek/hie-viz#readme
 synopsis:
   An experimental CLI tool for visualization of elm declaration dependencies.
 
@@ -14,48 +14,41 @@ description:
   An experimental CLI tool which parses source files in an elm projects and offers
   REPL-like UI for displaying declaration dependency graphs using graphviz library.
 
-category: Web
-build-type: Simple
+category:           Web
+build-type:         Simple
 extra-source-files: README.md
-tested-with: ghc ==9.6.4
+tested-with:        GHC ==9.4.8
 
 source-repository head
-  type: git
+  type:     git
   location: git@github.com/jhrcek/hie-viz.git
 
 flag WithJS
   description: Embed main.js file when building
-  default: False
-  manual: True
+  default:     False
+  manual:      True
 
 common common-options
-  build-depends: base >=4.7 && <5
+  build-depends:    base >=4.7 && <5
   default-language: GHC2021
   ghc-options:
-    -fwrite-ide-info
-    -hiedir=hie
-    -Wall
-    -Wcompat
-    -Widentities
-    -Wincomplete-record-updates
-    -Wincomplete-uni-patterns
-    -Wmissing-deriving-strategies
-    -Wmissing-export-lists
-    -Wno-unrecognised-pragmas
-    -Wpartial-fields
-    -Wredundant-constraints
+    -fwrite-ide-info -hiedir=hie -Wall -Wcompat -Widentities
+    -Wincomplete-record-updates -Wincomplete-uni-patterns
+    -Wmissing-deriving-strategies -Wmissing-export-lists
+    -Wno-unrecognised-pragmas -Wpartial-fields -Wredundant-constraints
     -Wunused-packages
 
 library
-  import: common-options
+  import:          common-options
 
   if flag(withjs)
     cpp-options: -DWithJS
+
   exposed-modules:
     Data.Declaration
     HieViz
 
-  hs-source-dirs: src
+  hs-source-dirs:  src
   other-modules:
     Data.DepGraph
     HieViz.Graphviz
@@ -64,48 +57,40 @@ library
 
   if flag(withjs)
     build-depends: file-embed
+
   build-depends:
-    aeson,
-    base >=4.7 && <5,
-    bytestring,
-    containers,
-    fgl,
-    foldl,
-    graphviz,
-    http-media,
-    lucid,
-    microlens-th,
-    servant,
-    servant-lucid,
-    servant-server,
-    text,
-    transformers,
-    turtle,
-    wai,
-    warp,
+    , aeson
+    , base            >=4.7 && <5
+    , bytestring
+    , containers
+    , fgl
+    , foldl
+    , graphviz
+    , http-media
+    , lucid
+    , servant
+    , servant-lucid
+    , servant-server
+    , text
+    , transformers
+    , turtle
+    , wai
+    , warp
 
 executable hie-viz
-  import: common-options
-  main-is: Main.hs
+  import:         common-options
+  main-is:        Main.hs
   hs-source-dirs: hie-viz
-  ghc-options:
-    -threaded
-    -rtsopts
-    -with-rtsopts=-N
-
-  build-depends: hie-viz
+  ghc-options:    -threaded -rtsopts -with-rtsopts=-N
+  build-depends:  hie-viz
 
 test-suite hie-viz-test
-  import: common-options
-  type: exitcode-stdio-1.0
-  main-is: Spec.hs
+  import:         common-options
+  type:           exitcode-stdio-1.0
+  main-is:        Spec.hs
   hs-source-dirs: test
-  ghc-options:
-    -threaded
-    -rtsopts
-    -with-rtsopts=-N
-
+  ghc-options:    -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-    graphviz,
-    hie-viz,
-    hspec,
+    , graphviz
+    , hie-viz
+    , hspec

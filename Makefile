@@ -3,7 +3,7 @@ script=dist/main.js
 .PHONY: format
 format:
 	git ls-files '*.hs' | xargs fourmolu -i --unsafe
-	cabal-fmt --inplace fundeps.cabal
+	cabal-fmt --inplace hie-viz.cabal
 
 .PHONY: client
 client:
@@ -15,7 +15,7 @@ minifi: client
 
 .PHONY: install
 install: client
-	stack install --ghc-options="-O2" --flag fundeps:WithJS
+	stack install --ghc-options="-O2" --flag hie-viz:WithJS
 
 .PHONY: test
 test:

@@ -48,7 +48,7 @@ import Data.FileEmbed (embedFile)
 elmApp = pure $(embedFile "client/dist/main.js")
 #else
 import qualified Data.ByteString (readFile)
-elmApp = liftIO $ Data.ByteString.readFile "/home/jhrcek/Devel/github.com/jhrcek/fundeps/client/dist/main.js"
+elmApp = liftIO $ Data.ByteString.readFile "/home/jhrcek/Devel/github.com/jhrcek/hie-viz/client/dist/main.js"
 #endif
 
 
@@ -61,10 +61,10 @@ runServer port depGraph = do
 
 app :: Port -> DepGraph -> Application
 app port depGraph =
-    serve (Proxy @FunDepsApi) (funDepsHandlers port depGraph)
+    serve (Proxy @HieVizApi) (hieVizServer port depGraph)
 
 
-type FunDepsApi =
+type HieVizApi =
     Get '[HTML] (Html ()) -- index.html
         :<|> "main.js" :> Get '[JS] ByteString
         :<|> "declarations" :> Get '[JSON] AllDecls
@@ -115,8 +115,8 @@ toAllDecls = AllDecls . go
             Map.empty
 
 
-funDepsHandlers :: Port -> DepGraph -> Server FunDepsApi
-funDepsHandlers port depGraph =
+hieVizServer :: Port -> DepGraph -> Server HieVizApi
+hieVizServer port depGraph =
     pure (indexHtml port)
         :<|> elmApp
         :<|> pure decls
@@ -141,7 +141,7 @@ indexHtml port = do
     html_ [lang_ "en"] $ do
         head_ $ do
             meta_ [charset_ "utf-8"]
-            title_ "FunDeps"
+            title_ "Hie Viz"
             script_ [src_ "main.js"] (mempty :: String)
         body_ $ script_ $ "Elm.Main.init({flags: " <> Text.pack (show port) <> "})"
 
@@ -163,4 +163,4 @@ instance MimeRender JS ByteString where
 
 
 imageDir :: Turtle.FilePath
-imageDir = "/tmp/fundeps"
+imageDir = "/tmp/hie-viz"
