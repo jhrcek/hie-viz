@@ -1,12 +1,12 @@
 cabal-version:      3.0
-name:               fundeps
+name:               hie-viz
 version:            0.1.0.0
 license:            BSD-3-Clause
 license-file:       LICENSE
 copyright:          2020 Jan Hrček
 maintainer:         honza.hrk@gmail.com
 author:             Jan Hrček
-homepage:           https://github.com/jhrcek/fundeps#readme
+homepage:           https://github.com/jhrcek/hie-viz#readme
 synopsis:
   An experimental CLI tool for visualization of elm declaration dependencies.
 
@@ -17,11 +17,11 @@ description:
 category:           Web
 build-type:         Simple
 extra-source-files: README.md
-tested-with:        GHC ==9.6.4
+tested-with:        GHC ==9.4.8
 
 source-repository head
   type:     git
-  location: git@github.com/jhrcek/fundeps.git
+  location: git@github.com/jhrcek/hie-viz.git
 
 flag WithJS
   description: Embed main.js file when building
@@ -46,19 +46,14 @@ library
 
   exposed-modules:
     Data.Declaration
-    FunDeps
-    TUI.Commands
+    HieViz
 
   hs-source-dirs:  src
   other-modules:
     Data.DepGraph
-    FunDeps.Graphviz
-    FunDeps.Server
+    HieViz.Graphviz
+    HieViz.Server
     Settings
-    TUI
-    TUI.Ansi
-    TUI.Select
-    TUI.Settings.Editor
 
   if flag(withjs)
     build-depends: file-embed
@@ -66,55 +61,36 @@ library
   build-depends:
     , aeson
     , base            >=4.7 && <5
-    , brick
     , bytestring
     , containers
     , fgl
     , foldl
     , graphviz
-    , haskeline
     , http-media
     , lucid
-    , microlens
-    , microlens-mtl
-    , microlens-th
-    , parsec
     , servant
     , servant-lucid
     , servant-server
     , text
     , transformers
     , turtle
-    , vector
-    , vty
-    , vty-unix
     , wai
     , warp
 
-executable fundeps
+executable hie-viz
   import:         common-options
   main-is:        Main.hs
-  hs-source-dirs: fundeps
+  hs-source-dirs: hie-viz
   ghc-options:    -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-    , fundeps
-    , turtle
+  build-depends:  hie-viz
 
-executable fundeps-hs
-  import:         common-options
-  main-is:        Main.hs
-  hs-source-dirs: fundeps-hs
-  ghc-options:    -threaded -rtsopts -with-rtsopts=-N
-  build-depends:  fundeps
-
-test-suite fundeps-test
+test-suite hie-viz-test
   import:         common-options
   type:           exitcode-stdio-1.0
   main-is:        Spec.hs
   hs-source-dirs: test
-  other-modules:  TUI.CommandsSpec
   ghc-options:    -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-    , fundeps
     , graphviz
+    , hie-viz
     , hspec

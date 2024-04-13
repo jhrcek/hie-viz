@@ -1,7 +1,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module FunDeps.Graphviz
+module HieViz.Graphviz
     ( GraphAction (..)
     , showDfsSubgraph
     , runGraphAction
@@ -27,9 +27,9 @@ import Data.GraphViz.Commands qualified as GvCmd
 import Data.GraphViz.Types qualified as GvTypes
 import Data.Maybe (mapMaybe)
 import Data.Monoid (Endo (..))
+import Data.Text.IO qualified as Text
 import Data.Text.Lazy qualified as LText
 import Settings (DependencyMode (..), Settings (..))
-import TUI.Ansi (cliWarn)
 import Turtle (FilePath, d, fp, printf, (%))
 import Prelude hiding (FilePath)
 
@@ -67,8 +67,10 @@ showDfsSubgraph graphAction DepGraph{graph, currentPackage} settings nodeIds = d
                     )
                     nodeIds
         unless (null excludedDecls) $ do
-            cliWarn "These functions were excluded from the graph, because they come from external packages:"
-            traverse_ (cliWarn . (" - " <>)) excludedDecls
+            -- TODO logging?
+            let warn = Text.putStrLn
+            warn "These functions were excluded from the graph, because they come from external packages:"
+            traverse_ (warn . (" - " <>)) excludedDecls
     when (G.noNodes subGraph /= 0) $
         runGraphAction graphAction settings currentPackage subGraph
 

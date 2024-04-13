@@ -1,13 +1,10 @@
 cradle:
   stack:
     - path: "./src"
-      component: "fundeps:lib"
+      component: "hie-viz:lib"
 
-    - path: "./fundeps/Main.hs"
-      component: "fundeps:exe:fundeps"
-
-    - path: "./fundeps-hs/Main.hs"
-      component: "fundeps:exe:fundeps-hs"
+    - path: "./hie-viz/Main.hs"
+      component: "hie-viz:exe:hie-viz"
 
     - path: "./test"
-      component: "fundeps:test:fundeps-test"
+      component: "hie-viz:test:hie-viz-test"
